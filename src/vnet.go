@@ -4,24 +4,52 @@ import (
 	"flag" //命令行参数解析
 	"fmt"
 	"log" //日志
+	"path/filepath"
+	"strings"
 
-	"lib/ethernet"
-	"lib/water"
+	"github/yingftf/vnet/lib/ethernet"
+	"github/yingftf/vnet/lib/water"
+
+	"github/yingftf/vnet/lib/common"
+
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 )
 
 func main() {
 
 	/***************************************************日志处理**********************************************/
-
+	// init log
+	if *ver {
+		common.PrintVersion()
+		return
+	}
+	if err := beego.LoadAppConfig("ini", filepath.Join(common.GetRunPath(), "conf", "../../../conf/nps.conf")); err != nil {
+		log.Fatalln("load config file error", err.Error())
+	}
+	common.InitPProfFromFile()
+	if level = beego.AppConfig.String("log_level"); level == "" {
+		level = "7"
+	}
+	logs.Reset()
+	logs.EnableFuncCallDepth(true)
+	logs.SetLogFuncCallDepth(3)
+	logPath := beego.AppConfig.String("log_path")
+	if logPath == "" {
+		logPath = common.GetLogPath()
+	}
+	if common.IsWindows() {
+		logPath = strings.Replace(logPath, "\\", "\\\\", -1)
+	}
 	/***************************************************参数处理**********************************************/
 	//定义在命令行中使用的开关参数
 	//调用如下 go run vnet.go -plaintext=true -csv=true
 	mode := flag.Bool("mode", false, "运行模式")
 	p2p := flag.Bool("p2p", false, "是否点对点直连")
-	name := flag.String("name", "张三", "姓名")
-	age := flag.Int("age", 18, "年龄")
-	married := flag.Bool("married", false, "婚否")
-	delay := flag.Duration("d", 0, "时间间隔")
+	name := flag.String("name", "XX", "XX")
+	age := flag.Int("age", 18, "XX")
+	married := flag.Bool("married", false, "XX")
+	delay := flag.Duration("d", 0, "XXXX")
 
 	// 将命令行解析为定义的标志
 	flag.Parse()
