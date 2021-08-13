@@ -7,10 +7,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github/yingftf/vnet/lib/ethernet"
-	"github/yingftf/vnet/lib/water"
-
-	"github/yingftf/vnet/lib/common"
+	"github.com/yingftf/vnet/lib/common"
+	"github.com/yingftf/vnet/lib/ethernet"
+	"github.com/yingftf/vnet/lib/water"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
